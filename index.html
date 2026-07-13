@@ -8,6 +8,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <meta name="theme-color" content="#000000" />
+    <meta name="color-scheme" content="dark" />
 
     <!-- Primary SEO -->
     <title>Amber Phosphor Terminal — a CRT-terminal UI theme</title>
@@ -44,12 +45,21 @@
       content="A pure-black, amber-phosphor CRT terminal UI theme. One glowing accent, monospace everywhere, dense controls — a tool, not a marketing page."
     />
     <meta name="twitter:image" content="https://theme.chakri.me/og.png" />
-    <!-- Black immediately, before anything paints. -->
+    <!-- Boot mask: pure-black with no visible content until the showcase has
+         mounted and its styles are applied, then reveal — kills the flash of
+         unstyled HTML (Vite injects CSS via JS in dev). -->
     <style>
-      html {
-        background: #000;
-      }
+      html { background: #000; }
+      body { visibility: hidden; }
     </style>
+    <script>
+      addEventListener("DOMContentLoaded", function () {
+        requestAnimationFrame(function () {
+          document.body.style.visibility = "visible";
+        });
+      });
+    </script>
+    <noscript><style>body { visibility: visible; }</style></noscript>
     <!-- Fonts: pixel display=block (never flash a fallback), mono display=swap. -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
