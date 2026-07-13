@@ -1,0 +1,6 @@
+{
+  // CSS custom-property IntelliSense: autocomplete for var(--…), hover showing
+  // the resolved value, and inline color swatches — across files, which the
+  // built-in CSS service doesn't do well.
+  "recommendations": ["vunguyentuan.vscode-css-variables"]
+}

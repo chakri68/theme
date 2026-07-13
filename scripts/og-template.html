@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=block"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --bg: #000000;
+        --panel: #0b0b0a;
+        --border: #2b2925;
+        --text: #ece7da;
+        --muted: #8b8574;
+        --accent: #ffb000;
+        --warn: #ff6a2b;
+        --danger: #ff6b6b;
+        --pixel: "Press Start 2P", monospace;
+        --mono: "JetBrains Mono", ui-monospace, monospace;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+      }
+      body {
+        background: var(--bg);
+        font-family: var(--mono);
+        color: var(--text);
+        /* faint scanline texture — CRT phosphor */
+        background-image: repeating-linear-gradient(
+          to bottom,
+          rgba(255, 176, 0, 0.03) 0px,
+          rgba(255, 176, 0, 0.03) 1px,
+          transparent 1px,
+          transparent 4px
+        );
+        position: relative;
+        overflow: hidden;
+      }
+      /* amber corner glow, top-left, like a monitor's hotspot */
+      body::before {
+        content: "";
+        position: absolute;
+        top: -220px;
+        left: -160px;
+        width: 700px;
+        height: 700px;
+        background: radial-gradient(circle, rgba(255, 176, 0, 0.14), transparent 62%);
+        pointer-events: none;
+      }
+      .frame {
+        position: absolute;
+        inset: 40px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 66px 72px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+      .top {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 17px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .mark {
+        filter: drop-shadow(0 0 10px rgba(255, 176, 0, 0.6));
+      }
+      .prompt {
+        color: var(--accent);
+        font-weight: 700;
+      }
+      .mid {
+        margin-top: 6px;
+      }
+      h1 {
+        font-family: var(--pixel);
+        color: var(--accent);
+        font-size: 74px;
+        line-height: 1.16;
+        letter-spacing: -0.5px;
+        text-shadow: 0 0 30px rgba(255, 176, 0, 0.5);
+      }
+      h1 .cursor {
+        display: inline-block;
+        width: 42px;
+        height: 62px;
+        margin-left: 12px;
+        vertical-align: -6px;
+        background: var(--accent);
+        box-shadow: 0 0 26px rgba(255, 176, 0, 0.7);
+      }
+      .sub {
+        margin-top: 34px;
+        font-size: 25px;
+        line-height: 1.5;
+        color: var(--text);
+        max-width: 900px;
+      }
+      .sub .m {
+        color: var(--muted);
+      }
+      .swatches {
+        display: flex;
+        gap: 12px;
+        margin-top: 40px;
+      }
+      .sw {
+        width: 66px;
+        height: 30px;
+        border-radius: 6px;
+        border: 1px solid var(--border);
+      }
+      .bottom {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+      }
+      .url {
+        font-size: 26px;
+        font-weight: 700;
+        color: var(--accent);
+        letter-spacing: 0.02em;
+      }
+      .url .p {
+        color: var(--muted);
+        font-weight: 400;
+      }
+      .tag {
+        font-size: 17px;
+        color: var(--muted);
+        text-transform: uppercase;
+        letter-spacing: 0.12em;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <div class="top">
+        <svg class="mark" width="30" height="30" viewBox="0 0 32 32" aria-hidden="true">
+          <rect x="6" y="6" width="12" height="12" rx="3" fill="#3a362e" stroke="#000000" stroke-width="1" />
+          <rect x="10" y="10" width="12" height="12" rx="3" fill="#8b8574" stroke="#000000" stroke-width="1" />
+          <rect x="14" y="14" width="12" height="12" rx="3" fill="#ffb000" stroke="#000000" stroke-width="1" />
+        </svg>
+        <span><span class="prompt">&gt;</span> amber phosphor terminal · ui theme</span>
+      </div>
+
+      <div class="mid">
+        <h1>AMBER<br />PHOSPHOR<span class="cursor"></span></h1>
+        <p class="sub">
+          A pure-black, amber-phosphor CRT terminal aesthetic.
+          <span class="m">One glowing accent, monospace everywhere, dense controls — a tool, not a marketing page.</span>
+        </p>
+        <div class="swatches">
+          <span class="sw" style="background: #000000"></span>
+          <span class="sw" style="background: #0b0b0a"></span>
+          <span class="sw" style="background: #2b2925"></span>
+          <span class="sw" style="background: #8b8574"></span>
+          <span class="sw" style="background: #ece7da"></span>
+          <span class="sw" style="background: #ffb000; border-color: #ffb000"></span>
+          <span class="sw" style="background: #ff6a2b"></span>
+          <span class="sw" style="background: #ff6b6b"></span>
+        </div>
+      </div>
+
+      <div class="bottom">
+        <div class="url"><span class="p">https://</span>theme.chakri.me</div>
+        <div class="tag">design tokens · css</div>
+      </div>
+    </div>
+  </body>
+</html>

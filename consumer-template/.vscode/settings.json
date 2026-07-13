@@ -1,0 +1,7 @@
+{
+  // The theme loads at runtime from theme.chakri.me/tokens.css — nothing local.
+  // So the editor has no file to read tokens from. `npm run pull-theme` drops a
+  // gitignored copy at .theme/tokens.css purely to feed IntelliSense; point the
+  // extension there. Re-run pull-theme whenever the theme changes.
+  "cssVariables.lookupFiles": [".theme/tokens.css", "src/**/*.css"]
+}

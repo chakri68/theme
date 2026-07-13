@@ -1,0 +1,6 @@
+{
+  // CSS custom-property IntelliSense for the Amber Phosphor tokens: var(--…)
+  // autocomplete, hover values, inline color swatches. Reads the local copy
+  // pulled by `npm run pull-theme` (see .vscode/settings.json).
+  "recommendations": ["vunguyentuan.vscode-css-variables"]
+}

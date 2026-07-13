@@ -2,12 +2,237 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>theme</title>
+
+    <!-- Icons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#000000" />
+
+    <!-- Primary SEO -->
+    <title>Amber Phosphor Terminal — a CRT-terminal UI theme</title>
+    <meta
+      name="description"
+      content="A pure-black, amber-phosphor CRT terminal UI theme. One glowing accent, monospace everywhere, dense controls — design tokens you link over the wire from theme.chakri.me."
+    />
+    <meta
+      name="keywords"
+      content="ui theme, design tokens, css, crt terminal, amber phosphor, monospace, dark mode, retro computing, jetbrains mono, press start 2p"
+    />
+    <meta name="author" content="chakri" />
+    <link rel="canonical" href="https://theme.chakri.me/" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Amber Phosphor Terminal" />
+    <meta property="og:url" content="https://theme.chakri.me/" />
+    <meta property="og:title" content="Amber Phosphor Terminal — a CRT-terminal UI theme" />
+    <meta
+      property="og:description"
+      content="A pure-black, amber-phosphor CRT terminal UI theme. One glowing accent, monospace everywhere, dense controls — a tool, not a marketing page."
+    />
+    <meta property="og:image" content="https://theme.chakri.me/og.png" />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1260" />
+    <meta property="og:image:alt" content="AMBER PHOSPHOR in a glowing pixel font on pure black, with the theme's colour palette below." />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Amber Phosphor Terminal — a CRT-terminal UI theme" />
+    <meta
+      name="twitter:description"
+      content="A pure-black, amber-phosphor CRT terminal UI theme. One glowing accent, monospace everywhere, dense controls — a tool, not a marketing page."
+    />
+    <meta name="twitter:image" content="https://theme.chakri.me/og.png" />
+    <!-- Black immediately, before anything paints. -->
+    <style>
+      html {
+        background: #000;
+      }
+    </style>
+    <!-- Fonts: pixel display=block (never flash a fallback), mono display=swap. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block" rel="stylesheet" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <script type="module" src="/src/main.ts"></script>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div class="page">
+      <header class="head">
+        <div class="head-main">
+          <h1 class="title">AMBER PHOSPHOR</h1>
+          <p class="sub">
+            Pure-black CRT terminal, one amber accent. The single source of truth for
+            every chakri.me site — link <code>theme.chakri.me/tokens.css</code> and inherit it all.
+          </p>
+        </div>
+        <div class="version-pick">
+          <label class="version-label" for="version">version</label>
+          <select id="version" class="select"></select>
+        </div>
+      </header>
+
+      <!-- Use it ---------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">use it</h2>
+        <p class="lede">Drop this into your <code>&lt;head&gt;</code> — fonts first, then the tokens.</p>
+        <div class="code-wrap">
+          <button class="copy-btn" id="copy-head" type="button">copy</button>
+          <pre class="code" id="head-snippet"><code>&lt;!-- Fonts: Press Start 2P (titles) + JetBrains Mono (everything) --&gt;
+&lt;link rel="preconnect" href="https://fonts.googleapis.com" /&gt;
+&lt;link rel="preconnect" href="https://fonts.gstatic.com" crossorigin /&gt;
+&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&amp;display=block" /&gt;
+&lt;link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&amp;display=swap" /&gt;
+
+&lt;!-- Amber Phosphor theme tokens --&gt;
+&lt;link rel="stylesheet" href="https://theme.chakri.me/tokens.css" /&gt;</code></pre>
+        </div>
+        <p class="hint">
+          Every chakri.me site is its own subdomain, so this is a cross-origin link — always the
+          absolute <code>https://theme.chakri.me/tokens.css</code>, which tracks the promoted
+          version. Pin one with
+          <code>https://theme.chakri.me/<span id="pin-cur">x.y.z</span>/tokens.css</code>.
+        </p>
+      </section>
+
+      <!-- Palette --------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">palette</h2>
+        <div class="swatches" id="swatches"></div>
+      </section>
+
+      <!-- Token reference ------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">all tokens</h2>
+        <table class="ref">
+          <thead>
+            <tr><th>token</th><th>value</th><th>usage</th></tr>
+          </thead>
+          <tbody id="ref-body"></tbody>
+        </table>
+      </section>
+
+      <!-- Typography ------------------------------------------------------ -->
+      <section class="section">
+        <h2 class="section-head">typography</h2>
+        <div class="stack">
+          <p class="type-pixel">Pixel display — titles only</p>
+          <p class="type-body">
+            Body is JetBrains Mono at 13px, dense and monospaced. Everything reads like a
+            tool, not a marketing page.
+          </p>
+          <p class="type-label">uppercase label · letter-spacing</p>
+          <p class="type-num">tabular nums 0123456789 · 1,204,880</p>
+        </div>
+      </section>
+
+      <!-- Buttons --------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">buttons</h2>
+        <div class="row">
+          <button class="btn">Default</button>
+          <button class="btn primary">Primary</button>
+          <button class="btn" disabled>Disabled</button>
+          <button class="btn-icon" aria-label="icon">◆</button>
+        </div>
+        <button class="add-rule">+ add rule</button>
+      </section>
+
+      <!-- Form controls --------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">controls</h2>
+        <div class="row">
+          <input class="input" type="text" placeholder="text input" />
+          <input class="input" type="number" value="42" />
+          <select class="select">
+            <option>select one</option>
+            <option>option two</option>
+          </select>
+          <input class="slider" type="range" min="0" max="100" value="66" />
+        </div>
+        <p class="hint">focus any field — border warms to amber; keyboard focus gets the ring.</p>
+      </section>
+
+      <!-- Chips ----------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">chips</h2>
+        <div class="row">
+          <span class="chip">idle</span>
+          <span class="chip on">active</span>
+          <span class="chip">off</span>
+          <span class="chip on">selected</span>
+        </div>
+      </section>
+
+      <!-- Badges ---------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">badges</h2>
+        <div class="row">
+          <span class="badge badge-live">live</span>
+          <span class="badge badge-featured">featured</span>
+          <span class="badge badge-wip">wip</span>
+          <span class="badge badge-archived">archived</span>
+        </div>
+      </section>
+
+      <!-- Cards ----------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">cards</h2>
+        <div class="cards">
+          <article class="card">
+            <h3 class="card-title">Near-black fill</h3>
+            <p class="card-desc">1px warm-gray hairline, 9px radius. Border warms on hover.</p>
+          </article>
+          <article class="card clickable">
+            <h3 class="card-title">Clickable</h3>
+            <p class="card-desc">Hover lifts the border to amber with a faint glow ring.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- Radii ----------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">radii</h2>
+        <div class="row radii">
+          <div class="radbox" style="border-radius: 4px">4</div>
+          <div class="radbox" style="border-radius: 6px">6</div>
+          <div class="radbox" style="border-radius: 8px">8</div>
+          <div class="radbox" style="border-radius: 9px">9</div>
+          <div class="radbox" style="border-radius: 16px">16</div>
+          <div class="radbox pill" style="border-radius: 999px">999</div>
+        </div>
+      </section>
+
+      <!-- Notices --------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">notices</h2>
+        <div class="stack">
+          <div class="notice warn">⚠ caution — warn-orange, tinted translucent bg.</div>
+          <div class="notice error">✗ error — danger-red, for destructive states only.</div>
+        </div>
+      </section>
+
+      <!-- Scrollbar ------------------------------------------------------- -->
+      <section class="section">
+        <h2 class="section-head">scrollbar</h2>
+        <div class="scroll-demo">
+          <p>Scroll me. Inset thumb, amber on hover, no stepper arrows.</p>
+          <p>Line two.</p>
+          <p>Line three.</p>
+          <p>Line four.</p>
+          <p>Line five — keep going.</p>
+          <p>Line six.</p>
+        </div>
+      </section>
+
+      <footer class="foot">
+        <span>Amber Phosphor Terminal</span>
+        <span class="muted">link <code>theme.chakri.me/tokens.css</code> · pin <code>theme.chakri.me/&lt;x.y.z&gt;/tokens.css</code></span>
+      </footer>
+    </div>
   </body>
 </html>

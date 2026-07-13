@@ -1,0 +1,3 @@
+# Local copy of the theme tokens, pulled by `npm run pull-theme` for IntelliSense.
+# Not loaded at runtime — the site links chakri.me/theme/tokens.css directly.
+.theme/
