@@ -1,0 +1,56 @@
+name: Deploy to GitHub Pages
+
+# Build the showcase + token host and publish dist/ to Pages.
+# CNAME (public/CNAME → dist/CNAME) keeps the theme.chakri.me custom domain.
+
+on:
+  push:
+    branches: [master]
+  workflow_dispatch:
+
+# Read the repo, write the Pages deployment, mint the OIDC token Pages needs.
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# One live deploy at a time; don't cancel an in-flight one mid-publish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24.11.1"
+          cache: npm
+
+      # HUSKY=0 so the `prepare` hook-install doesn't run in CI.
+      - name: Install
+        run: npm ci
+        env:
+          HUSKY: 0
+
+      - name: Build
+        run: npm run build
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
