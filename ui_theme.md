@@ -30,7 +30,82 @@ Guiding principles:
 
 ## 2. Design tokens
 
-Define these once (CSS custom properties on `:root`, or your framework's theme).
+The tokens live in **one place**: `https://theme.chakri.me/tokens.css` — a hosted
+stylesheet that defines all of the custom properties below on `:root`. Every
+chakri.me site is its own subdomain (its own origin), so it links this
+cross-origin and gets the theme without redefining anything. Edit the tokens
+once at the source and every consumer picks it up.
+
+### If this is a chakri.me site (the default) — link the hosted tokens
+
+Don't paste the `:root` block. Add these to `<head>`, in this order:
+
+```html
+<!-- Dark from frame zero: color-scheme governs the pre-paint canvas color,
+     before any background rule (or the render-blocking token link) can paint. -->
+<meta name="color-scheme" content="dark" />
+
+<!-- Fonts as <head> links, NOT @import — the preload scanner can't see into
+     CSS, so @import costs one extra serial round-trip before first paint. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=block"
+  rel="stylesheet"
+/>
+<link
+  href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- Boot mask: pure-black, no visible content until the app has mounted and its
+     styles are applied, then reveal — kills the flash of unstyled HTML (Vite
+     injects app CSS via JS in dev; also guards a slow first load). The listener
+     attaches at parse time so it fires even if app JS throws. -->
+<style>
+  html {
+    background: #000;
+  }
+  body {
+    visibility: hidden;
+  }
+</style>
+<script>
+  addEventListener("DOMContentLoaded", function () {
+    requestAnimationFrame(function () {
+      document.body.style.visibility = "visible";
+    });
+  });
+</script>
+<noscript><style>body { visibility: visible; }</style></noscript>
+
+<!-- Amber Phosphor theme tokens — single source of truth -->
+<link rel="stylesheet" href="https://theme.chakri.me/tokens.css" />
+```
+
+Notes:
+
+- **Pin a version for production stability.** The floating
+  `https://theme.chakri.me/tokens.css` always serves the current release; pin to
+  a specific version with `https://theme.chakri.me/<x.y.z>/tokens.css` (e.g.
+  `https://theme.chakri.me/1.0.0/tokens.css`) if you don't want a theme edit to
+  reach the site until you bump it. Published version folders are immutable.
+  `https://theme.chakri.me/versions.json` lists what's available.
+- **Don't redefine the 12 shared tokens** (`--bg --panel-2 --panel --border
+  --text --muted --accent --accent-dim --warn --danger --font-pixel
+  --font-mono`) in a local `:root` — that shadows the source and drifts. Only
+  add *project-specific* extras locally (a grid color, a trace palette, a radius
+  scale), and use the canonical names above so nothing collides.
+- **IntelliSense (optional):** point the CSS Variables extension at a local copy
+  of the tokens so `var(--…)` autocompletes. See `consumer-template/` for the
+  `.vscode` config and the `pull-theme` script that fetches `tokens.css` into a
+  gitignored `.theme/`.
+
+### If this is NOT a chakri.me site — copy the block inline
+
+For a truly external project (no access to `theme.chakri.me`, or you want zero
+network dependency), define these once yourself (CSS custom properties on
+`:root`, or your framework's theme):
 
 ```css
 :root {
