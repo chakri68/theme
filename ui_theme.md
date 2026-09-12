@@ -100,12 +100,43 @@ Notes:
   of the tokens so `var(--…)` autocompletes. See `consumer-template/` for the
   `.vscode` config and the `pull-theme` script that fetches `tokens.css` into a
   gitignored `.theme/`.
+- **Override a token locally only when the *delivery* differs, never the
+  value.** `collections` is the one standing example: it self-hosts both faces
+  through `next/font`, which names them at build time, so the literal family
+  names in `--font-pixel` / `--font-mono` match nothing there. It redefines
+  exactly those two, at a doubled `:root:root` selector so the override wins
+  whichever order the stylesheets land in, and takes every colour from here.
 
-### If this is NOT a chakri.me site — copy the block inline
+### If the site cannot make the request — vendor the tokens with a script
 
-For a truly external project (no access to `theme.chakri.me`, or you want zero
-network dependency), define these once yourself (CSS custom properties on
-`:root`, or your framework's theme):
+A few consumers genuinely cannot link a cross-origin stylesheet. `local-vault`
+is the case to copy: its own CSP pins `style-src 'self'` and `connect-src
+'none'`, and its spec asks for zero application-initiated network requests, so
+the hosted link would be blocked by the site's own policy — correctly.
+
+**Don't hand-copy the block in that case.** A pasted `:root` is what drifts;
+that is the whole problem this host exists to solve. Instead generate it:
+
+- `scripts/pull-theme.mjs` fetches a *pinned* version (`theme.chakri.me/<x.y.z>/
+  tokens.css`) and writes `src/theme-tokens.css` with a `GENERATED — do not
+  edit` header.
+- That file is **committed**, not gitignored, so the build reproduces byte for
+  byte with no network at all.
+- The app's own CSS `@import`s it on the first line, ahead of everything else.
+- A theme change reaches the site as a re-run of the script and a reviewed diff,
+  the way a dependency bump does — not as someone retyping hex.
+
+A service-worker site can have it both ways instead: link the hosted tokens and
+let the worker cache them. `dead-drop` does this, serving the cached copy
+immediately (so it themes itself with no signal at all) while revalidating in
+the background, so the next load still picks up a theme edit. Cache-first alone
+would pin whatever amber it saw first, forever.
+
+### If this is a genuinely external project — copy the block inline
+
+Last resort, for a project outside this world entirely (no access to
+`theme.chakri.me`, no build step to generate from). Define these once yourself
+(CSS custom properties on `:root`, or your framework's theme):
 
 ```css
 :root {
