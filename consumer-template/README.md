@@ -48,3 +48,19 @@ Pin a specific version for the local copy:
 ```sh
 THEME_URL=https://theme.chakri.me/1.0.0/tokens.css npm run pull-theme
 ```
+
+## 4. If the site can't make the request
+
+A site whose own CSP forbids a cross-origin stylesheet — or that must work with
+no network at all — vendors the tokens instead of linking them. Same script,
+three differences: pin a version, write into `src/` rather than `.theme/`, and
+**commit the output** so the build needs no network. The app's CSS then
+`@import`s it on its first line. `local-vault` is the worked example; see
+`ui_theme.md` §2.
+
+Never hand-copy the `:root` block for this. A pasted copy is what drifts, and
+drift is the whole reason this host exists.
+
+A site with a service worker can keep the link instead and cache it — serve the
+cached tokens instantly so it themes itself offline, and revalidate in the
+background so the next load still picks up a theme edit. `dead-drop` does that.
